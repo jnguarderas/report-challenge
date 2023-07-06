@@ -1,4 +1,4 @@
-package com.linbrox.report.controller;
+package com.linbrox.report.infrastructure.controller;
 
 
 import com.linbrox.report.application.service.SummarySaleService;
@@ -10,9 +10,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Mono;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +41,7 @@ public class ReportController {
             @ApiResponse(responseCode = "500", description = "Something bad happened")
     })
     @GetMapping("/report")
-    public ReportResponse create(@ApiParam(value = "Model")
+    public Mono<ReportResponse> create(@ApiParam(value = "Model")
                                @RequestParam HyundaiModelEnum model,
                                  @ApiParam(value = "CryptoCurrency")
                                @RequestParam CryptoCurrencyEnum cryptoCurrency,
@@ -49,9 +52,10 @@ public class ReportController {
         Date date = null;
         try {
             date = dateFormat.parse(dateString);
-            return this.summarySaleService.retrieveDailySale(date, model.name(), cryptoCurrency.name());
+            var reportResponse = this.summarySaleService.retrieveDailySale(date, model.name(), cryptoCurrency.name());
+            return Mono.just(reportResponse);
         } catch (ParseException e) {
-            return null;
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something is wrong with the request");
         }
     }
 }
