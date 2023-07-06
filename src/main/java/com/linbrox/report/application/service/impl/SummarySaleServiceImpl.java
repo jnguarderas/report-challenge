@@ -1,24 +1,26 @@
-package com.linbrox.report.service;
+package com.linbrox.report.application.service.impl;
 
-
-import com.linbrox.report.entity.SummarySale;
-import com.linbrox.report.repository.SummarySaleRepository;
-import com.linbrox.report.response.ReportResponse;
-import org.springframework.stereotype.Service;
+import com.linbrox.report.application.service.MessageBrokerService;
+import com.linbrox.report.application.service.SummarySaleService;
+import com.linbrox.report.domain.model.SummarySale;
+import com.linbrox.report.domain.repository.SummarySaleRepository;
+import com.linbrox.report.domain.model.ReportResponse;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-@Service
-public class SummarySaleService {
+public class SummarySaleServiceImpl implements SummarySaleService {
 
     private final SummarySaleRepository summarySaleRepository;
+    private final MessageBrokerService messageBrokerService;
 
-    public SummarySaleService(SummarySaleRepository summarySaleRepository) {
+    public SummarySaleServiceImpl(SummarySaleRepository summarySaleRepository, MessageBrokerService messageBrokerService) {
         this.summarySaleRepository = summarySaleRepository;
+        this.messageBrokerService = messageBrokerService;
     }
 
+    @Override
     public ReportResponse retrieveDailySale(Date currentDay, String model, String cryptoCurrency){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDay);
@@ -33,10 +35,10 @@ public class SummarySaleService {
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.MILLISECOND, 999);
         Date endDate = calendar.getTime();
-        List<SummarySale> summarySaleList = this.summarySaleRepository.findByModelAndCryptoCurrencyAndPurchasedAtBetween(model, cryptoCurrency, startDate, endDate);
+        List<SummarySale> summarySaleEntityList = this.summarySaleRepository.findByModelAndCryptoCurrencyAndPurchasedAtBetween(model, cryptoCurrency, startDate, endDate);
         Double accumulatedUSD = 0d;
         Double accumulateCrypto = 0d;
-        for(SummarySale summarySale: summarySaleList){
+        for(SummarySale summarySale : summarySaleEntityList){
             accumulateCrypto = accumulateCrypto + summarySale.amountCryptCurrency;
             accumulatedUSD = accumulatedUSD + summarySale.amountUSD;
         }

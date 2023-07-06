@@ -1,4 +1,4 @@
-package com.linbrox.report.response;
+package com.linbrox.report.domain.model;
 
 import lombok.Builder;
 import lombok.Data;

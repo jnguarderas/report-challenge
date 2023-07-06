@@ -1,4 +1,4 @@
-package com.linbrox.report;
+package com.linbrox.report.domain.model;
 
 
 import lombok.Data;

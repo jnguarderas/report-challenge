@@ -1,10 +1,10 @@
 package com.linbrox.report.controller;
 
 
+import com.linbrox.report.application.service.SummarySaleService;
 import com.linbrox.report.common.CryptoCurrencyEnum;
 import com.linbrox.report.common.HyundaiModelEnum;
-import com.linbrox.report.response.ReportResponse;
-import com.linbrox.report.service.SummarySaleService;
+import com.linbrox.report.domain.model.ReportResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
