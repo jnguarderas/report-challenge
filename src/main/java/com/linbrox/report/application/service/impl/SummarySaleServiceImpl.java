@@ -44,7 +44,7 @@ public class SummarySaleServiceImpl implements SummarySaleService {
         }
         ReportResponse reportResponse = ReportResponse.builder()
                 .cryptocurrency(cryptoCurrency)
-                .date(startDate)
+                .date(currentDay)
                 .model(model)
                 .cryptocurrencyAmount(accumulateCrypto)
                 .usdAmount(accumulatedUSD)

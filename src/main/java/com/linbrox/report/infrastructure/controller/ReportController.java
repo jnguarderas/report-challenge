@@ -41,11 +41,11 @@ public class ReportController {
             @ApiResponse(responseCode = "500", description = "Something bad happened")
     })
     @GetMapping("/report")
-    public Mono<ReportResponse> create(@ApiParam(value = "Model")
+    public Mono<ReportResponse> report(@ApiParam(value = "Model")
                                @RequestParam HyundaiModelEnum model,
-                                 @ApiParam(value = "CryptoCurrency")
+                                       @ApiParam(value = "CryptoCurrency")
                                @RequestParam CryptoCurrencyEnum cryptoCurrency,
-                                 @ApiParam(value = "Date (dd-MM-yyyyy)")
+                                       @ApiParam(value = "Date (dd-MM-yyyyy)")
                                @RequestParam String dateString){
         // Parse the dateString into a Date object
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
